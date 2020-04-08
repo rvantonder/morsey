@@ -1,0 +1,3 @@
+title=MorseyX
+author=Me
+orientation=landscape

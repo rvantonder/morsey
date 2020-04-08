@@ -1,0 +1,4 @@
+buildozer android release
+zipalign -v 4 Morsey-1.6-release-unsigned.apk Morsey-1.6-release-aligned.apk
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore morsey-release.keystore Morsey-1.6-release-aligned.apk morsey
+adb install Morsey-1.6-release-aligned.apk

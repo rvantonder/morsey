@@ -1,0 +1,6 @@
+hint needs to be aligned perfectly
+bigger resources, heart, lightning, etc
+support portrait rotation
+clover block?
+
+feature graphic 1024x500

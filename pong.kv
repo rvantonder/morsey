@@ -1,0 +1,282 @@
+#:kivy 1.8.0-dev
+#:import Window kivy.core.window.Window
+
+<Piece>:
+    im: im
+
+    Image:
+        id: im
+        source: 'pngs/piece1.png'
+        size: im.texture_size
+        pos: self.pos
+
+<Tile>:
+    t_label: text_label1
+    t_imag: imag
+    t_imag_bonus: imag_bonus
+    size: 93*Window.height/480., 65*Window.height/480.
+#   size: "62dp", "43dp" 
+#    scale: Window.height/480.
+    Image:
+        id: imag
+        source: 'pngs/0.png'
+        allow_stretch: True
+        size: 93*Window.height/480., 65*Window.height/480.
+#       size: 93, 65
+#       size: "62dp", "43dp"
+        anim_delay: 0.2
+        color: self.color
+        pos: self.pos
+
+    Image:
+        id: imag_bonus
+        source: 'pngs/hex.png'
+        allow_stretch: True
+        size: 93*Window.height/480., 65*Window.height/480.
+#       size: 93, 65
+#       size: "62dp", "43dp"
+        anim_delay: 0.2
+        center: self.parent.t_imag.center
+
+    Label:
+        id: text_label1
+        markup: True
+        text_size: self.parent.size # text bounding box size of the parent tile
+        size: self.parent.size # size of the actual label
+
+        halign: 'center'
+        valign: 'middle'
+        pos: self.parent.t_imag.pos
+        font_size: 34*Window.height/480.
+
+<PongGame>:
+    h_label_left: help_label_left
+    h_label_right: help_label_right
+    hint: hint
+    heart1: heart1
+    heart2: heart2
+    heart3: heart3
+    heart4: heart4
+    heart5: heart5
+    heart6: heart6
+    heart7: heart7
+    heart8: heart8
+    heart9: heart9
+    heart10: heart10
+    menu: bottom_menu
+    lightning: lightning
+
+    canvas:
+        Color:
+            hsv: self.background_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+        Color:
+            rgba: 1, 1, 1, 1
+        # center bar
+#        Rectangle: 
+#            pos: self.center_x-5, 0
+#            size: 10, self.height
+
+# this line needs to be scales do that 480*s = 50, s= 50/480
+        Line:
+            points: 0, 50*self.magic_scale_value, root.width, 50*self.magic_scale_value
+            width: 1
+
+    Label:
+        id: help_label_left
+#       text_size: self.size
+        font_size: root.magic_scale_value*(22 if root.magic_scale_value < 2.2 else 12)
+        center: self.width/2, root.height/2
+        halign: 'left'
+
+    Label:
+        id: help_label_right
+        font_size: root.magic_scale_value*(22 if root.magic_scale_value < 2.2 else 12)
+#       text_size: self.size
+        center: root.width-self.width/2, root.height/2
+        halign: 'right'
+
+    GridLayout:
+        id: bottom_menu
+        hint: hint 
+        size: root.width, 50*root.magic_scale_value # width
+        cols: 3
+        rows: 1
+
+        GridLayout:
+            cols: 2
+
+            # current score
+            Label: 
+                font_name: 'fonts/Kavoon-Regular.ttf'
+                font_size: 40*root.magic_scale_value
+                text_size: self.size
+                size: self.size
+                halign: 'left'
+                text: str(root.score)
+
+            GridLayout:
+                rows: 2
+                cols: 5
+
+                Image:
+                    id: heart1 
+                    source: 'pngs/heart.png'
+                    allow_stretch: True
+                Image:
+                    id: heart2
+                    source: 'pngs/heart.png'
+                    allow_stretch: True
+                Image:
+                    id: heart3
+                    source: 'pngs/heart.png'
+                    allow_stretch: True
+                Image:
+                    id: heart4 
+                    source: 'pngs/empty_heart.png'
+                    allow_stretch: True
+                Image:
+                    id: heart5
+                    source: 'pngs/empty_heart.png'
+                    allow_stretch: True
+                Image:
+                    id: heart6
+                    source: 'pngs/empty_heart.png'
+                    allow_stretch: True
+                Image:
+                    id: heart7 
+                    source: 'pngs/empty_heart.png'
+                    allow_stretch: True
+                Image:
+                    id: heart8
+                    source: 'pngs/empty_heart.png'
+                    allow_stretch: True
+                Image:
+                    id: heart9
+                    source: 'pngs/empty_heart.png'
+                    allow_stretch: True
+                Image:
+                    id: heart10
+                    source: 'pngs/empty_heart.png'
+                    allow_stretch: True
+
+        # current streak
+        Label: 
+            font_size: 45*root.magic_scale_value
+            text_size: self.size
+            size: self.size
+            text: str(''.join(root.streak))
+            markup: True
+            halign: 'center'
+
+        GridLayout:
+            cols: 2
+
+            Image:
+                id: lightning
+                source: 'pngs/lightning.png'
+                on_touch_down: root.cash_in()
+                allow_stretch: True
+
+            Image:
+                id: hint
+                source: 'pngs/hint.png'
+                halign: 'right'
+                allow_stretch: True
+
+<TextButton@Button>:
+    color: 1,1,1,1
+    background_color: 0xbb / 255., 0xad / 255., 0xa0 / 255., 1.
+    background_normal: 'pngs/round.png'
+    background_down: 'pngs/round.png'
+    size_hint_y: None
+    height: '48dp'
+    font_size: '20dp'
+    bold: True
+
+<GooglePlayPopup>:
+    size_hint: None, None
+    title: 'Connect to Google Play'
+#   title_color: 102 / 255., 204 / 255., 0 / 255., 1.
+    title_color: 0x77 / 255., 0x6e / 255., 0x65 / 255., 1.
+    size: '300dp', '300dp'
+    background: 'pngs/popup.png'
+    separator_color: 0x77 / 255., 0x6e / 255., 0x65 / 255., 1.
+    title_size: '20sp'
+
+    BoxLayout:
+
+        orientation: 'vertical'
+        spacing: '10dp'
+        padding: '10dp'
+
+        Label:
+            font_size: '20sp'
+#           color: 102 / 255., 204 / 255., 0 / 255., 1.
+            color: 0x77 / 255., 0x6e / 255., 0x65 / 255., 1.
+            bold: True
+            text: 'Do you want to connect to Google Play for the Leaderboard and Achievements? (Recommended)'
+            text_size: self.width - dp(20), None
+            halign: 'center'
+
+        BoxLayout:
+            size_hint_y: None
+            height: '68dp'
+            spacing: '10dp'
+            TextButton:
+                background_color: 204 / 255., 0 / 255., 0 / 255., .8
+                text: 'No'
+                on_press: root.dismiss()
+
+            TextButton:
+                text: 'Yes'
+                background_color: 102 / 255., 204 / 255., 0 / 255., .8
+                on_press: app.activate_google_play(); root.dismiss()
+
+<FirstTimePopup>:
+    size_hint: None, None
+    title: 'Note!'
+#   title_color: 102 / 255., 204 / 255., 0 / 255., 1.
+    title_color: 0x77 / 255., 0x6e / 255., 0x65 / 255., 1.
+    size: '300dp', '300dp'
+    background: 'pngs/popup.png'
+    separator_color: 0x77 / 255., 0x6e / 255., 0x65 / 255., 1.
+    title_size: '20sp'
+    label: label
+    image: image
+
+    BoxLayout:
+
+        orientation: 'vertical'
+        spacing: '10dp'
+        padding: '10dp'
+
+        Image:
+            id: image
+            source: 'pngs/piece1.png'
+            size: image.texture_size
+            pos: self.pos
+
+        Label:
+            id: label
+            font_size: '20sp'
+#           color: 102 / 255., 204 / 255., 0 / 255., 1.
+            color: 0x77 / 255., 0x6e / 255., 0x65 / 255., 1.
+            bold: True
+            text: 'Do you want to connect to Google Play for the Leaderboard and Achievements? (Recommended)'
+            text_size: self.width - dp(20), None
+            halign: 'center'
+
+        BoxLayout:
+            size_hint_y: None
+            height: '68dp'
+            spacing: '10dp'
+
+            TextButton:
+                text: 'OK!'
+                background_color: 102 / 255., 204 / 255., 0 / 255., .8
+                on_press: root.dismiss()
+
